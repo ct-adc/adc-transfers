@@ -2,21 +2,17 @@
 
 ## 使用
 
-从npm安装`ct-adc`
+从npm安装`ct-adc-auto-complete`
 ```
-npm install ct-adc
+npm install ct-adc-auto-complete
 ```
 在代码中引用
 ```
-import adc from 'ct-adc';
-Vue.use(adc)
-```
-或
-```
-import adc from 'ct-adc';
-import {AutoComplete} from 'ct-adc'
+import AutoComplete from 'ct-adc-auto-complete';
 Vue.component(AutoComplete.name,AutoComplete);
+
 ```
+
 ## 参数说明
 
 参数|描述|类型|默认值 
