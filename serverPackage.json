@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "author": "dxl",
+  "config": {
+    "href": "http://tcysyshd.admin.ct108.org:1505/",
+    "host": "tcysyshd.admin.ct108.org",
+    "port": 1505,
+    "debug": false
+  },
+  "dataList": []
+}

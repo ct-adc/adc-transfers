@@ -1,0 +1,29 @@
+{
+  "sub":true,
+  "laxbreak":true,
+  "laxcomma":true,
+  "asi": true,
+  "browser": false,
+  "expr":true,
+  "node": true,
+  "es5": true,
+  "esnext": true,
+  "bitwise": true,
+  "curly": true,
+  "immed": true,
+  "latedef": false,
+  "expr": true,
+  "eqeqeq": false,
+  "eqnull": false,
+  "newcap": true,
+  "noarg": true,
+  "undef": true,
+  "proto": true,
+  "strict": false,
+  "smarttabs": true,
+  "globals": {
+    "$": false,
+    "Vue":false,
+    "MiniMsg":false
+  }
+}
