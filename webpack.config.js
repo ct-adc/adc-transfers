@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = {
   context: path.resolve(__dirname, "./example"),
   entry: {
-    simple:'./simple/index.js'
+    LLTransferSimple:'./LLTransfer/simple/index.js'
   },
   output: {
     path: path.resolve(__dirname, './asset'),
@@ -56,10 +56,10 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true,
-    proxy:{
-      '**': 'http://localhost:3000'
-    }
+    noInfo: true
+    //proxy:{
+    //  '**': 'http://localhost:3000'
+    //}
   },
   performance: {
     hints: false
