@@ -28,6 +28,9 @@ new Vue({
     methods:{
         change(rightList){
             console.log(rightList);
+        },
+        getRightList(){
+            console.log(this.$refs.transfer.getRightList())
         }
     }
 });

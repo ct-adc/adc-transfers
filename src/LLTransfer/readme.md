@@ -18,7 +18,7 @@ Vue.component(LLTransfer.name,LLTransfer);
 --- | --- | --- | --- |
 dataSource | 原始数据 | Array | []
 selectedItems | 已选择的列表(右边的数据) | Array | []
-matchKey | 自动匹配输入时可被匹配的key | ['Id']
+matchKey | 自动匹配输入时可被匹配的key | Array | ['Id']
 showKey | 显示在单个列表项中的key，如果key有多个,组件采用'-'进行分割内容 | Array | ['Name']
 
 

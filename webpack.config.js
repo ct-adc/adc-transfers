@@ -1,10 +1,12 @@
 var path = require('path');
 var webpack = require('webpack');
-
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var extractCSS = new ExtractTextPlugin('style/[name].css');
 module.exports = {
   context: path.resolve(__dirname, "./example"),
   entry: {
-    LLTransferSimple:'./LLTransfer/simple/index.js'
+    LLTransferSimple:'./LLTransfer/simple/index.js',
+    TTTransferSimple:'./TTTransfer/simple/index.js'
   },
   output: {
     path: path.resolve(__dirname, './asset'),
@@ -16,8 +18,8 @@ module.exports = {
       {
         enforce:'pre',
         test: /\.js$/, // include .js files
-        exclude: /node_modules/, // exclude any and all files in the node_modules folder
-        loader: "jshint-loader"
+        exclude: /node_modules/ // exclude any and all files in the node_modules folder
+        //loader: "jshint-loader"
       },
       {
         test: /\.vue$/,
@@ -27,6 +29,7 @@ module.exports = {
             // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
             // the "scss" and "sass" values for the lang attribute to the right configs here.
             // other preprocessors should work out of the box, no loader config like this nessessary.
+            'css':'vue-style-loader!css-loader',
             'scss': 'vue-style-loader!css-loader!sass-loader',
             'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
           }
@@ -44,6 +47,10 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: /\.css$/,
+        loader: extractCSS.extract(['css-loader'])
       }
     ]
   },
@@ -64,7 +71,8 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#source-map',
+  plugins:[extractCSS]
 };
 
 if (process.env.NODE_ENV === 'production') {

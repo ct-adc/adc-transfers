@@ -240,6 +240,9 @@
                     showItems.push(item[key]);
                 })
                 return showItems.join('-');
+            },
+            getRightList(){
+                return JSON.parse(JSON.stringify(this.rightList));
             }
         },
         watch: {

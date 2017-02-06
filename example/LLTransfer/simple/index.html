@@ -8,7 +8,11 @@
 </head>
 <body>
 <div id="transfer">
-    <transfer-ll :show-key="showKey" :data-source="list" @change="change"></transfer-ll>
+    <transfer-ll :show-key="showKey"
+                 :data-source="list"
+                 ref="transfer"
+                 @change="change"></transfer-ll>
+    <button type="button" class="btn btn-default" @click="getRightList">get rightlist</button>
 </div>
 
 <script src="../../../source/jquery.js"></script>
