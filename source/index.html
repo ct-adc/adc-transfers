@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://tcysystinker.admin.ct108.org:1505/_test/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title></title>
+    
+    <script src="./index_files/jquery.js"></script>
+
+    <style>
+        body {
+            font-family: consolas;
+        }
+
+        div.section {
+            border: solid 1px #e0e0e0;
+            margin: 20px;
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+            border: solid 1px #dddddd;
+        }
+    </style>
+    <script type="text/javascript">
+        function txtToObj(txt) {
+            var data = {};
+            var arr = txt.split('\n');
+
+            for (var i = 0; i < arr.length; i++) {
+                var kv = arr[i];
+                var parts = kv.split(':');
+                if (parts.length < 2) {
+                    continue;
+                }
+                var key = parts[0].trim();
+                parts.shift();
+                var value = parts.join(':');
+                data[key] = value;
+            }
+            return data;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#btnSaveChargeSettings").click(function () {
+                var txt = $("#txtChargeSettings").val();
+
+                var postData = txtToObj(txt);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/chargeSettings/save",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+
+            });
+
+            $("#btnChangeStatus").click(function () {
+                var txt = $("#txtChangeStatus").val();
+
+                var postData = txtToObj(txt);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/patch/savePatchTestStatus",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnPublish").click(function () {
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/chargeSettings/publish"
+                }).done(function (res) {
+                });
+
+            });
+
+
+
+            //add by licheng
+            $("#btnSave").click(function () {
+                var txt = $("#txtSubActivity").val();
+
+                var postData = txtToObj(txt);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/patchConfig/savePatchConfigInfo",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+
+            });
+
+            $("#btnSaveSkin").click(function () {
+                var txt = $("#txtActivitySkin").val();
+
+                var postData = txtToObj(txt);
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/activitySkin/saveSkin",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+
+            });
+
+            $("#btnSubOpenStatus").click(function () {
+                var id = $("#txtsubActivityId").val();
+
+                var postData = { "Id": id, "PublishStatus": 1 };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/patchConfig/changeConfigStatus",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnSubCloseStatus").click(function () {
+                var id = $("#txtsubActivityId").val();
+
+                var postData = { "Id": id, "PublishStatus": 2 };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/patchConfig/changeConfigStatus",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnMonitorInfoText").click(function () {
+                var patchId = $("#txtMonitorInfoText").val();
+                var startTimestampInMs = $("#txtMonitorInfoStartTimestampInMs").val();
+                var endTimestampInMs = $("#txtMonitorInfoEndTimestampInMs").val();
+
+                //var postData = { "PatchId": patchId };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    url: "/api/patchMonitor/getPatchMonitorInfo?patchId="+patchId + '&startTimestampInMs='+startTimestampInMs+'&endTimestampInMs='+endTimestampInMs
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnDeleteSubActivity").click(function () {
+
+                var id = $("#txtDeleteSubActivityId").val();
+                var status = $("#txtDeleteSubActivityStatus").val();
+
+                var postData = { "id": id, "status": status };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/subActivity/deleteSubActivity",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnDeleteActivitySkin").click(function () {
+
+                var id = $("#txtDeleteActivitySkinId").val();
+
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/activitySkin/deleteSkin",
+                    data: id
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnSearch").click(function () {
+
+                var status = $("#txtStatus").val();
+                var actId = $("#txtActId").val();
+                var os = $("#txtOs").val();
+                var kind = $("#txtKind").val();
+                var subName = $("#txtSubName").val();
+                var startTime = $("#txtStartTime").val();
+                var endTime = $("#txtEndTime").val();
+                var data = {
+                    "Id": actId,
+                    "Status": status,
+                    "Os": os,
+                    "Kind": kind,
+                    "SubActivityName": subName,
+                    "StartTime": startTime,
+                    "EndTime": endTime
+                };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    url: "/api/masterActivity/getPage",
+                    data: data
+                }).done(function (res) {
+
+                });
+            });
+
+            //$("#btnAddSubToMaster").click(function () {
+
+            //    var masterId = $("#txtMasterActivityId").val();
+
+            //    var postData = { "MasterActivityId": masterId, "SubIds": [2, 3] };
+
+            //    $.ajax({
+            //        dataType: 'json',
+            //        type: 'POST',
+            //        contentType: 'application/json',
+            //        url: "/api/masterActivity/addSubListToMaster",
+            //        data: JSON.stringify(postData)
+            //    }).done(function (res) {
+            //    });
+            //});
+
+            $("#btnMaster").click(function () {
+
+                var txt = $("#txtMaster").val();
+
+                var postData = txtToObj(txt);
+
+                postData.SubIds = [26, 27];
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    url: "/api/patch/savePatch",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                });
+            });
+
+
+            $("#btnAwardearch").click(function () {
+
+                var id = $("#txtId").val();
+                var itemName = $("#txtItemName").val();
+                var status = $("#txtAwardStatus").val();
+                var userId = $("#txtUserId").val();
+                var minTime = $("#txtMinTime").val();
+                var maxTime = $("#txtMaxTime").val();
+
+                var getdata = {
+                    "AwardActivityId": id,
+                    "UserId": userId,
+                    "ItemName": itemName,
+                    "Status": status,
+                    "MinCreationTime": minTime,
+                    "MaxCreationTime": maxTime,
+                };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    url: "/api/awardLog/getPage",
+                    data: getdata
+                }).done(function (res) {
+                });
+            });
+
+            $("#btnExport").click(function () {
+
+                var id = $("#txtId").val();
+                var itemName = $("#txtItemName").val();
+                var status = $("#txtAwardStatus").val();
+                var userId = $("#txtUserId").val();
+                var minTime = $("#txtMinTime").val();
+                var maxTime = $("#txtMaxTime").val();
+
+                var postData = {
+                    "AwardActivityId": id,
+                    "UserId": userId,
+                    "ItemName": itemName,
+                    "Status": status,
+                    "MinCreationTime": minTime,
+                    "MaxCreationTime": maxTime,
+                };
+
+                $.ajax({
+                    dataType: 'json',
+                    type: 'GET',
+                    contentType: 'application/json',
+                    url: "/api/awardLog/SentAwardLogExport",
+                    data: JSON.stringify(postData)
+                }).done(function (res) {
+                    alert(res.text);
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    <div class="section">
+        <h3>修改补丁测试状态</h3>
+        <a href="http://tcysystinker.admin.ct108.org:1505/api/patch/getTestChannelId">获取测试渠道Id</a>
+        <button type="button" id="btnChangeStatus">改变测试状态</button>
+
+        <br>
+        <textarea id="txtChangeStatus" style="width: 300px;">            Id:1
+            TestStatus:1
+
+        </textarea>
+    </div>
+
+    <div class="section">
+        <h3>添加补丁信息</h3>
+        <button type="button" id="btnMaster">添加</button>
+        <textarea id="txtMaster" style="width: 400px; height: 200px;">            Id:1
+            AppVersion:4.5.0
+            UpdateMode:1
+            PackageUrl:http://tcy365.com/packageUrl
+            PatchUrl:http://tcy365.com/patchUrl
+            PatchVersion:4.5.0.4
+            PatchMd5:fw43423rfjdsfjslwersdfewr
+            Description:测试数据
+
+        </textarea>
+        <br>
+    </div>
+
+    <div class="section">
+        <h3>上传补丁文件</h3>
+        <form name="form" action="http://tcysystinker.admin.ct108.org:1505/api/patch/uploadPatch" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="upFile">
+            <br>
+            <input type="submit" id="btnSubmit" value="Submit">
+        </form>
+    </div>
+
+    <div class="section">
+        <h3>上传渠道表, CSV</h3>
+        <form name="form" action="http://tcysystinker.admin.ct108.org:1505/api/patchConfig/uploadChannel" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="upFile">
+            <br>
+            <input type="submit" id="btnSubmit" value="Submit">
+        </form>
+    </div>
+
+    <div class="section">
+        <h3>分页/获取</h3>
+        <a href="http://tcysystinker.admin.ct108.org:1505/api/patch/getPatchList?page=1&amp;&amp;pageSize=10">获取补丁列表</a>
+        <a href="http://tcysystinker.admin.ct108.org:1505/api/patchMonitor/getPatchVersionList">获取补丁版本列表</a>
+        <br>
+    </div>
+
+
+    <div class="section">
+        <h3>获取补丁配置信息</h3>
+        <a href="http://tcysystinker.admin.ct108.org:1505/api/patchConfig/getPatchConfigInfo?patchId=1">获取补丁Id=1的配置</a>
+        <br>
+    </div>
+
+    <div class="section">
+        <h3>新建/修改补丁配置</h3>
+        <button type="button" id="btnSave">新建/修改</button>
+        <br>
+        <textarea id="txtSubActivity" style="width: 500px; height: 250px;">            Id:1
+            PatchId:1
+            AreaListType:0
+            AreaList:["浙江","浙江-杭州","浙江-杭州-滨江"]
+            ChannelListType:0
+            ChannelList:["199991","199992","199993"]
+            TimeType:1
+            StartTimestampInMs:8394839439439
+            EndTimestampInMs:8394839439439
+            PublishType:1
+            LimitType:1
+            LimitNumber:10000
+
+        </textarea>
+    </div>
+
+    <div class="section">
+        <h3>改变配置启用状态</h3>
+
+        <button type="button" id="btnSubOpenStatus">启用</button>
+        <button type="button" id="btnSubCloseStatus">禁用</button>
+        <input type="text" id="txtsubActivityId" value="1">
+        <br>
+    </div>
+
+    <div class="section">
+        <h3>获取监控信息</h3>
+
+        <button type="button" id="btnMonitorInfoText">获取</button>
+        PatchId:<input type="text" id="txtMonitorInfoText" value="1">
+        StartTimestampInMs:<input type="text" id="txtMonitorInfoStartTimestampInMs" value="1483926860">
+        EndTimestampInMs:<input type="text" id="txtMonitorInfoEndTimestampInMs" value="1486605260">
+        <br>
+    </div>
+    <hr>
+    <div class="section">
+        <h3>平台单包:新建/修改</h3>
+        <button type="button" id="btnSaveSafePackage">新建/修改</button>
+        <br>
+        <textarea id="txtSaveSafePackage" style="width: 700px; height: 150px;">            Id:1
+            TcyAppVersion:4.5.0
+            SafePackageVersion:4.5.1
+            Url:http://www.abc.com
+        </textarea>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#btnSaveSafePackage").click(function () {
+                    var txt = $("#txtSaveSafePackage").val();
+
+                    var postData = txtToObj(txt);
+
+                    $.ajax({
+                        dataType: 'json',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: "/api/safePackage/save",
+                        data: JSON.stringify(postData)
+                    }).done(function (res) {
+                    });
+                });
+            });
+        </script>
+    </div>
+
+    <div class="section">
+        <h3>平台单包:分页列表</h3>
+        <a href="http://tcysystinker.admin.ct108.org:1505/api/safePackage/getList?pageIndex=1&amp;pageSize=20">分页列表</a>
+    </div>
+
+    <div class="section">
+        <h3>平台单包:修改状态</h3>
+        <button type="button" id="btnSafePackageChangeStatus">修改状态</button>
+        <br>
+        <textarea id="txtSafePackageChangeStatus" style="width: 700px; height: 50px;">            Id:1
+            Status:0
+        </textarea>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#btnSafePackageChangeStatus").click(function () {
+                    var txt = $("#txtSafePackageChangeStatus").val();
+
+                    var postData = txtToObj(txt);
+
+                    $.ajax({
+                        dataType: 'json',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: "/api/safePackage/changeStatus",
+                        data: JSON.stringify(postData)
+                    }).done(function (res) {
+                    });
+                });
+            });
+        </script>
+    </div>
+
+    <div class="section">
+        <h3>平台单包:生效</h3>
+        <button type="button" id="btnSafePackagePublish">生效</button>
+        <br>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#btnSafePackagePublish").click(function () {
+
+                    $.ajax({
+                        dataType: 'json',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        url: "/api/safePackage/publish"
+                    }).done(function (res) {
+                    });
+                });
+            });
+        </script>
+    </div>
+
+    <div class="section">
+        <h3>平台单包:上传文件</h3>
+        <form name="form" action="http://tcysystinker.admin.ct108.org:1505/api/safePackage/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="uploadFile">
+            <br>
+            <input type="submit" id="btnSubmit" value="Submit">
+        </form>
+    </div>
+
+
+</body></html>
