@@ -5,8 +5,7 @@ var extractCSS = new ExtractTextPlugin('style/[name].css');
 module.exports = {
   context: path.resolve(__dirname, "./example"),
   entry: {
-    LLTransferSimple:'./LLTransfer/simple/index.js',
-    TTTransferSimple:'./TTTransfer/simple/index.js'
+    LLTransferSimple:'./LLTransfer/simple/index.js'
   },
   output: {
     path: path.resolve(__dirname, './asset'),
