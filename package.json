@@ -1,7 +1,7 @@
 {
   "name": "ct-adc-transfers",
   "description": "vue component",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "ruby",
   "private": false,
   "scripts": {
