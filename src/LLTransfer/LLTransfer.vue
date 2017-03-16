@@ -307,7 +307,7 @@
 
     .list-group-item {
         margin: 0;
-        padding: 0 15px;
+        padding: 0 15px 0 30px;
         line-height: 30px;
         border: none;
     }
@@ -315,6 +315,10 @@
     .list-group-item:hover {
         background: #f5f5f5;
         cursor: pointer;
+    }
+
+    .list-group-item input[type="checkbox"] {
+        margin-left: -15px;
     }
 
     input[type="checkbox"] {
