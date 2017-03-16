@@ -31,4 +31,4 @@ showKey | 显示在单个列表项中的key，如果key有多个,组件采用'-'
 
 ### changeLog
 
-[changeLog](https://github.com/ct-adc/adc-transfers/blob/master/changeLog.md)
+[changeLog](/changeLog.md)
