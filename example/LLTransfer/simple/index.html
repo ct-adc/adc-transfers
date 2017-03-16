@@ -7,12 +7,18 @@
     <link href="../../../source/theme.css" rel="stylesheet">
 </head>
 <body>
-<div id="transfer">
-    <transfer-ll :show-key="showKey"
-                 :data-source="list"
-                 ref="transfer"
-                 @change="change"></transfer-ll>
-    <button type="button" class="btn btn-default" @click="getRightList">get rightlist</button>
+<div class="container">
+    <div id="transfer" class="col-md-8 col-sm-offset-2 mt20">
+        <transfer-ll :show-key="showKey"
+                     :data-source="list"
+                     ref="transfer"
+                     @change="change"></transfer-ll>
+
+        <hr>
+        <div>
+            {{rightList }}
+        </div>
+    </div>
 </div>
 
 <script src="../../../source/jquery.js"></script>

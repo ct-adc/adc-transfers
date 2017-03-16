@@ -3,8 +3,8 @@
  */
 import Vue from 'vue';
 import transfers from '../../../index';
-Vue.component(transfers.LLTransfer.name,transfers.LLTransfer);
-var list=[
+Vue.component(transfers.LLTransfer.name, transfers.LLTransfer);
+var list = [
     {Id: 1, Name: 'one'},
     {Id: 2, Name: 'two'},
     {Id: 3, Name: 'three'},
@@ -22,15 +22,13 @@ var list=[
 new Vue({
     el: '#transfer',
     data: {
-        list:list,
-        showKey: ['Id','Name']
+        list: list,
+        showKey: ['Id', 'Name'],
+        rightList: ''
     },
-    methods:{
-        change(rightList){
-            console.log(rightList);
-        },
-        getRightList(){
-            console.log(this.$refs.transfer.getRightList())
+    methods: {
+        change (rightList) {
+            this.rightList = JSON.stringify(rightList);
         }
     }
 });

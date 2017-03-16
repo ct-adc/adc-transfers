@@ -278,6 +278,11 @@
         transform: translate(-50%, -50%);
     }
 
+    .buttons .btn {
+        display: block;
+        margin: 0 auto;
+    }
+
     .transfer-container {
         overflow: hidden;
     }
