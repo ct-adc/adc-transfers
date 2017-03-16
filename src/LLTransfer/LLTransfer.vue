@@ -1,75 +1,75 @@
 <template>
-    <div class="row">
-        <div class="col-sm-3">
+    <div class="clearfix">
+        <div class="col-sm-5">
             <div class="panel panel-default transfer-container">
                 <div class="panel-heading">
-                    <input type="checkbox" v-model="leftAllChecked"/>
+                    <input type="checkbox" v-model="leftAllChecked">
                     <template v-if="leftAllChecked">
-                        {{matchedLeftList.length}}/{{matchedLeftList.length}} items
+                        {{matchedLeftList.length}} / {{matchedLeftList.length}} 项
                     </template>
                     <template v-else-if="leftMatchedCheckedItems.length>0">
-                        {{leftMatchedCheckedItems.length}}/{{matchedLeftList.length}} items
+                        {{leftMatchedCheckedItems.length}} / {{matchedLeftList.length}} 项
                     </template>
                     <template v-else>
-                        {{matchedLeftList.length}} items
+                        {{matchedLeftList.length}} 项
                     </template>
                 </div>
                 <div class="transfer-container-autoC">
-                    <input type="text" class="form-control" v-model="leftAutoCompleteInput" placeholder="请输入内容进行搜索"/>
+                    <input type="text" class="form-control" v-model="leftAutoCompleteInput" placeholder="请输入内容进行搜索">
                 </div>
-                <div class="list">
+                <div class="list" :class="{'scroll-y': matchedLeftList.length > 7}">
                     <ul class="list-group">
                         <template v-for="(item,index) in matchedLeftList">
                             <li class="list-group-item" @click="toggleLeft($event,index)">
-                                <input type="checkbox" v-model="item.checked" :key="index"/>
-                                {{listContent(item)}}
+                                <input type="checkbox" v-model="item.checked" :key="index">
+                                {{ listContent(item) }}
                             </li>
                         </template>
+                        <li class="list-group-item text-muted" v-if="matchedLeftList.length === 0">暂无数据</li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-sm-1">
-            <div class="buttons">
-                <button type="button"
-                        class="btn btn-default"
-                        :class="{disabled:!toRightBtnStatus}"
-                        :disabled="!toRightBtnStatus"
-                        @click="toRight" style="margin-bottom:10px">向右
-                </button>
-                <button type="button"
-                        class="btn btn-default"
-                        :class="{disabled:!toLeftBtnStatus}"
-                        :disabled="!toLeftBtnStatus"
-                        @click="toLeft">向左
-                </button>
-            </div>
+        <div class="col-sm-2 text-center buttons">
+            <button type="button"
+                    class="btn btn-default"
+                    :class="{disabled:!toRightBtnStatus}"
+                    :disabled="!toRightBtnStatus"
+                    @click="toRight" style="margin-bottom:10px">向右
+            </button>
+            <button type="button"
+                    class="btn btn-default"
+                    :class="{disabled:!toLeftBtnStatus}"
+                    :disabled="!toLeftBtnStatus"
+                    @click="toLeft">向左
+            </button>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-5 col-sm-offset-2">
             <div class="panel panel-default transfer-container">
                 <div class="panel-heading">
-                    <input type="checkbox" v-model="rightAllChecked"/>
+                    <input type="checkbox" v-model="rightAllChecked">
                     <template v-if="rightAllChecked">
-                        {{matchedRightList.length}}/{{matchedRightList.length}} items
+                        {{matchedRightList.length}} / {{matchedRightList.length}} 项
                     </template>
                     <template v-else-if="rightMatchedCheckedItems.length>0">
-                        {{rightMatchedCheckedItems.length}}/{{matchedRightList.length}} items
+                        {{rightMatchedCheckedItems.length}} / {{matchedRightList.length}} 项
                     </template>
                     <template v-else>
-                        {{matchedRightList.length}} items
+                        {{matchedRightList.length}} 项
                     </template>
                 </div>
                 <div class="transfer-container-autoC">
-                    <input type="text" class="form-control" v-model="rightAutoCompleteInput" placeholder="请输入内容进行搜索"/>
+                    <input type="text" class="form-control" v-model="rightAutoCompleteInput" placeholder="请输入内容进行搜索">
                 </div>
-                <div class="list">
+                <div class="list" :class="{'scroll-y': matchedRightList.length > 7}">
                     <ul class="list-group">
                         <template v-for="(item,index) in matchedRightList">
                             <li class="list-group-item" @click="toggleRight($event,index)">
-                                <input type="checkbox" v-model="item.checked"/>
-                                {{listContent(item)}}
+                                <input type="checkbox" v-model="item.checked">
+                                {{ listContent(item) }}
                             </li>
                         </template>
+                        <li class="list-group-item text-muted" v-if="matchedRightList.length === 0">暂无数据</li>
                     </ul>
                 </div>
             </div>
@@ -197,14 +197,14 @@
                     item.checked = false;
                 });
                 this.leftList = this.leftList.filter(function (item1) {
-                    var notMatchedChecked=that.leftMatchedCheckedItems.filter(function (item2) {
-                        return objEqual(item1, item2);
-                    }).length===0;
+                    var notMatchedChecked = that.leftMatchedCheckedItems.filter(function (item2) {
+                            return objEqual(item1, item2);
+                        }).length === 0;
                     return notMatchedChecked;
                 });
                 this.rightList.unshift(...leftMatchedCheckedItems);
                 this.leftAllChecked = false;
-                this.$emit('change',JSON.parse(JSON.stringify(this.rightList)));
+                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
             toLeft(){
                 var that = this;
@@ -213,14 +213,14 @@
                     item.checked = false;
                 });
                 this.rightList = this.rightList.filter(function (item1) {
-                    var notMatchedChecked=that.rightMatchedCheckedItems.filter(function (item2) {
-                        return objEqual(item1, item2);
-                    }).length===0;
+                    var notMatchedChecked = that.rightMatchedCheckedItems.filter(function (item2) {
+                            return objEqual(item1, item2);
+                        }).length === 0;
                     return notMatchedChecked;
                 })
                 this.leftList.unshift(...rightMatchedCheckedItems);
                 this.rightAllChecked = false;
-                this.$emit('change',JSON.parse(JSON.stringify(this.rightList)));
+                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
             toggleLeft(event, index){
                 var clone = JSON.parse(JSON.stringify(this.leftList));
@@ -271,34 +271,28 @@
 </script>
 
 <style scoped>
-    .row{
-        height:300px;
-        width:900px;
-    }
-    .row .col-sm-1{
-        height:100%;
-    }
-    .buttons{
+    .buttons {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
+
     .transfer-container {
-        height:300px;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
     }
 
     .transfer-container-autoC {
         padding: 5px;
     }
 
+    .scroll-y {
+        overflow-y: scroll !important;
+    }
+
     .list {
         overflow: hidden;
-        overflow-y: scroll;
-        border-radius: 4px;
+        height: 210px;
     }
 
     .list-group {
@@ -307,16 +301,19 @@
     }
 
     .list-group-item {
-        border-left: none;
-        border-right: none;
-        border-top: none;
-        margin-bottom: 0;
+        margin: 0;
+        padding: 0 15px;
+        line-height: 30px;
+        border: none;
     }
 
     .list-group-item:hover {
-        background: #f2f2f2;
+        background: #f5f5f5;
         cursor: pointer;
     }
 
+    input[type="checkbox"] {
+        vertical-align: text-top;
+    }
 </style>
 
