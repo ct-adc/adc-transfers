@@ -27,3 +27,8 @@ showKey | 显示在单个列表项中的key，如果key有多个,组件采用'-'
 ### change事件
 
 当穿梭框的'向左'/'向右'被执行后触发该事件。
+
+
+### changeLog
+
+[changeLog](https://github.com/ct-adc/adc-transfers/blob/master/changeLog.md)
