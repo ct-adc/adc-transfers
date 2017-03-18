@@ -2,6 +2,6 @@
   "presets": [
     ["es2015", { "modules": false }],
   ],
-  "plugins": ["transform-runtime","transform-vue-jsx"],
+  "plugins": ["transform-runtime"],
   "comments": false
 }

@@ -3,11 +3,8 @@
         <div class="col-sm-5">
             <div class="panel panel-default transfer-container">
                 <div class="panel-heading">
-                    <input type="checkbox" v-model="leftAllChecked">
-                    <template v-if="leftAllChecked">
-                        {{matchedLeftList.length}} / {{matchedLeftList.length}} 项
-                    </template>
-                    <template v-else-if="leftMatchedCheckedItems.length>0">
+                    <input type="checkbox" v-model="leftAllChecked" @change="changeLeftAll">
+                    <template v-if="leftMatchedCheckedItems.length>0">
                         {{leftMatchedCheckedItems.length}} / {{matchedLeftList.length}} 项
                     </template>
                     <template v-else>
@@ -47,11 +44,8 @@
         <div class="col-sm-5 col-sm-offset-2">
             <div class="panel panel-default transfer-container">
                 <div class="panel-heading">
-                    <input type="checkbox" v-model="rightAllChecked">
-                    <template v-if="rightAllChecked">
-                        {{matchedRightList.length}} / {{matchedRightList.length}} 项
-                    </template>
-                    <template v-else-if="rightMatchedCheckedItems.length>0">
+                    <input type="checkbox" v-model="rightAllChecked" @change="changeRightAll">
+                    <template v-if="rightMatchedCheckedItems.length>0">
                         {{rightMatchedCheckedItems.length}} / {{matchedRightList.length}} 项
                     </template>
                     <template v-else>
@@ -78,6 +72,7 @@
 </template>
 
 <script type="es6">
+    import utility from 'ct-utility';
     function objEqual(obj1, obj2) {
         for (var i in obj1) {
             if (obj1.hasOwnProperty(i) && JSON.stringify(obj2[i]) !== JSON.stringify(obj1[i])) {
@@ -121,8 +116,6 @@
             return {
                 leftAutoCompleteInput: '',
                 rightAutoCompleteInput: '',
-                leftMasterCheck: false,
-                rightMasterCheck: false,
                 leftList: [],
                 rightList: [],
                 leftAllChecked: false,
@@ -147,9 +140,11 @@
                 }
             },
             leftMatchedCheckedItems(){
-                return this.matchedLeftList.filter(function (item) {
+                var checked = this.matchedLeftList.filter(function (item) {
                     return item.checked;
                 });
+                this.leftAllChecked = checked.length > 0 && checked.length === this.matchedLeftList.length;
+                return checked;
             },
             matchedRightList(){
                 var that = this;
@@ -165,9 +160,11 @@
                 }
             },
             rightMatchedCheckedItems(){
-                return this.matchedRightList.filter(function (item) {
+                var checked = this.matchedRightList.filter(function (item) {
                     return item.checked;
                 });
+                this.rightAllChecked = checked.length > 0 && checked.length === this.matchedRightList.length;
+                return checked;
             },
             toRightBtnStatus(){
                 return this.leftMatchedCheckedItems.length > 0;
@@ -197,13 +194,13 @@
                     item.checked = false;
                 });
                 this.leftList = this.leftList.filter(function (item1) {
-                    var notMatchedChecked = that.leftMatchedCheckedItems.filter(function (item2) {
-                            return objEqual(item1, item2);
-                        }).length === 0;
-                    return notMatchedChecked;
+                    return that.leftMatchedCheckedItems.filter(function (item2) {
+                                return objEqual(item1, item2);
+                            }).length === 0;
                 });
                 this.rightList.unshift(...leftMatchedCheckedItems);
                 this.leftAllChecked = false;
+                this.rightAllChecked = false;
                 this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
             toLeft(){
@@ -213,13 +210,13 @@
                     item.checked = false;
                 });
                 this.rightList = this.rightList.filter(function (item1) {
-                    var notMatchedChecked = that.rightMatchedCheckedItems.filter(function (item2) {
-                            return objEqual(item1, item2);
-                        }).length === 0;
-                    return notMatchedChecked;
+                    return that.rightMatchedCheckedItems.filter(function (item2) {
+                                return objEqual(item1, item2);
+                            }).length === 0;
                 })
                 this.leftList.unshift(...rightMatchedCheckedItems);
                 this.rightAllChecked = false;
+                this.leftAllChecked = false;
                 this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
             toggleLeft(event, index){
@@ -243,6 +240,26 @@
             },
             getRightList(){
                 return JSON.parse(JSON.stringify(this.rightList));
+            },
+            changeLeftAll(event){
+                var checked = event.target.checked;
+                var matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
+                matchedLeftList.map(function (item, index, arr) {
+                    arr[index].checked = checked;
+                })
+                var target=[];
+                utility.base.extend(true,target,this.leftList, matchedLeftList);
+                this.leftList=target;
+            },
+            changeRightAll(event){
+                var checked = event.target.checked;
+                var matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
+                matchedRightList.map(function (item, index, arr) {
+                    arr[index].checked = checked;
+                })
+                var target=[];
+                utility.base.extend(true,target,this.rightList, matchedRightList);
+                this.rightList=target;
             }
         },
         watch: {
@@ -251,20 +268,6 @@
             },
             selectedItems(){
                 this.getLeftRightList();
-            },
-            leftAllChecked(checked){
-                var leftListClone = JSON.parse(JSON.stringify(this.leftList));
-                leftListClone.map(function (item, index, arr) {
-                    arr[index].checked = checked;
-                })
-                this.leftList = leftListClone;
-            },
-            rightAllChecked(checked){
-                var rightListClone = JSON.parse(JSON.stringify(this.rightList));
-                rightListClone.map(function (item, index, arr) {
-                    arr[index].checked = checked;
-                })
-                this.rightList = rightListClone;
             }
         }
     }
