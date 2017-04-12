@@ -179,10 +179,9 @@
                 var that = this;
                 var dataSource = this.dataSource;
                 this.leftList = dataSource.filter(function (item1) {
-                    var selected;
-                    that.selectedItems.map(function (item2) {
-                        selected = objEqual(item1, item2);
-                    })
+                    var selected=that.selectedItems.filter(function (item2) {
+                        return objEqual(item1, item2);
+                    }).length>0;
                     return !selected;
                 })
                 this.rightList = JSON.parse(JSON.stringify(this.selectedItems));
