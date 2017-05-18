@@ -25,9 +25,9 @@ new Vue({
         list: list,
         showKey: ['Id', 'Name'],
         selectedItems: [
-            {Id: 3, Name: 'three'},
-            {Id: 4, Name: 'four'},
-            {Id: 5, Name: 'five'}
+            {Id: 3},
+            {Id: 4},
+            {Id: 5}
         ],
         rightList: []
     },

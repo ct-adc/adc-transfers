@@ -123,7 +123,8 @@
             };
         },
         created(){
-            this.getLeftRightList();
+            this.initRightList();
+            this.initLeftList();
         },
         computed: {
             matchedLeftList(){
@@ -174,17 +175,34 @@
             }
         },
         methods: {
-            getLeftRightList(){
+            initRightList(){
+                var selectedItems=this.selectedItems;
+                if(this.selectedItems.length>0 && this.dataSource.length>0){
+                    var isBroken=Object.keys(this.selectedItems[0]).length<Object.keys(this.dataSource[0]).length;
+                    if(isBroken){
+                        selectedItems=this.selectedItems.map(item1=>{
+                            var matched=this.dataSource.filter(item2=>{
+                                //item1和item2中的每一个matchkey对应的值都相等(不匹配的matchkey为0)
+                                return this.matchKey.filter(key=>{
+                                    return item1[key]!==item2[key];
+                                }).length===0
+                            });
+                            return matched[0];
+                        })
+                    }
+                }
+                this.rightList=selectedItems;
+            },
+            initLeftList(){
                 //处理leftList和matchedRightList
                 var that = this;
                 var dataSource = this.dataSource;
                 this.leftList = dataSource.filter(function (item1) {
-                    var selected=that.selectedItems.filter(function (item2) {
+                    var selected=that.rightList.filter(function (item2) {
                         return objEqual(item1, item2);
                     }).length>0;
                     return !selected;
                 })
-                this.rightList = JSON.parse(JSON.stringify(this.selectedItems));
             },
             toRight(){
                 var that = this;
@@ -263,10 +281,12 @@
         },
         watch: {
             dataSource(){
-                this.getLeftRightList();
+                this.initRightList();
+                this.initLeftList();
             },
             selectedItems(){
-                this.getLeftRightList();
+                this.initRightList();
+                this.initLeftList();
             }
         }
     }
