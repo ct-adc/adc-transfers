@@ -4,6 +4,10 @@
 
 - 优化 根据dataSource自动补全选中项
 
+- 新增 新增unpkg支持的在线demo
+
+- 新增 新增props: leftLoading / rightLoading
+
 ### 0.0.5
 
 *2017-04-12*

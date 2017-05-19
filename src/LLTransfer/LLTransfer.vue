@@ -11,20 +11,27 @@
                         {{matchedLeftList.length}} 项
                     </template>
                 </div>
-                <div class="transfer-container-autoC">
-                    <input type="text" class="form-control" v-model="leftAutoCompleteInput" placeholder="请输入内容进行搜索">
+                <div class="transfer-container-bottom">
+                    <div class="loading" v-if="leftLoading" style="margin-top:-44px;height:254px;"></div>
+                    <template v-else>
+                        <div class="transfer-container-autoC">
+                            <input type="text" class="form-control" v-model="leftAutoCompleteInput"
+                                   placeholder="请输入内容进行搜索">
+                        </div>
+                        <div class="list" :class="{'scroll-y': matchedLeftList.length > 7}">
+                            <ul class="list-group">
+                                <template v-for="(item,index) in matchedLeftList">
+                                    <li class="list-group-item" @click="toggleLeft($event,index)">
+                                        <input type="checkbox" v-model="item.checked" :key="index">
+                                        {{ listContent(item) }}
+                                    </li>
+                                </template>
+                                <li class="list-group-item text-muted" v-if="matchedLeftList.length === 0">暂无数据</li>
+                            </ul>
+                        </div>
+                    </template>
                 </div>
-                <div class="list" :class="{'scroll-y': matchedLeftList.length > 7}">
-                    <ul class="list-group">
-                        <template v-for="(item,index) in matchedLeftList">
-                            <li class="list-group-item" @click="toggleLeft($event,index)">
-                                <input type="checkbox" v-model="item.checked" :key="index">
-                                {{ listContent(item) }}
-                            </li>
-                        </template>
-                        <li class="list-group-item text-muted" v-if="matchedLeftList.length === 0">暂无数据</li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         <div class="col-sm-2 text-center buttons">
@@ -52,19 +59,25 @@
                         {{matchedRightList.length}} 项
                     </template>
                 </div>
-                <div class="transfer-container-autoC">
-                    <input type="text" class="form-control" v-model="rightAutoCompleteInput" placeholder="请输入内容进行搜索">
-                </div>
-                <div class="list" :class="{'scroll-y': matchedRightList.length > 7}">
-                    <ul class="list-group">
-                        <template v-for="(item,index) in matchedRightList">
-                            <li class="list-group-item" @click="toggleRight($event,index)">
-                                <input type="checkbox" v-model="item.checked">
-                                {{ listContent(item) }}
-                            </li>
-                        </template>
-                        <li class="list-group-item text-muted" v-if="matchedRightList.length === 0">暂无数据</li>
-                    </ul>
+                <div class="transfer-container-bottom">
+                    <div class="loading" v-if="rightLoading" style="margin-top:-44px;height:254px;"></div>
+                    <template v-else>
+                        <div class="transfer-container-autoC">
+                            <input type="text" class="form-control" v-model="rightAutoCompleteInput"
+                                   placeholder="请输入内容进行搜索">
+                        </div>
+                        <div class="list" :class="{'scroll-y': matchedRightList.length > 7}">
+                            <ul class="list-group">
+                                <template v-for="(item,index) in matchedRightList">
+                                    <li class="list-group-item" @click="toggleRight($event,index)">
+                                        <input type="checkbox" v-model="item.checked">
+                                        {{ listContent(item) }}
+                                    </li>
+                                </template>
+                                <li class="list-group-item text-muted" v-if="matchedRightList.length === 0">暂无数据</li>
+                            </ul>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>
@@ -110,6 +123,14 @@
                 //显示的key，可以单个或多个key
                 type: Array,
                 default: ['Name']
+            },
+            leftLoading: {
+                type: Boolean,
+                default: false
+            },
+            rightLoading: {
+                type: Boolean,
+                default: false
             }
         },
         data(){
@@ -130,8 +151,8 @@
             matchedLeftList(){
                 var that = this;
                 if (that.leftAutoCompleteInput != '') {
-                    return that.leftList.filter(function (item) {
-                        var matched = that.matchKey.filter(function (key) {
+                    return that.leftList.filter(function(item) {
+                        var matched = that.matchKey.filter(function(key) {
                             return (item[key] + '').indexOf(that.leftAutoCompleteInput) > -1;
                         });
                         return matched.length > 0;
@@ -141,7 +162,7 @@
                 }
             },
             leftMatchedCheckedItems(){
-                var checked = this.matchedLeftList.filter(function (item) {
+                var checked = this.matchedLeftList.filter(function(item) {
                     return item.checked;
                 });
                 this.leftAllChecked = checked.length > 0 && checked.length === this.matchedLeftList.length;
@@ -150,8 +171,8 @@
             matchedRightList(){
                 var that = this;
                 if (that.rightAutoCompleteInput != '') {
-                    return that.rightList.filter(function (item) {
-                        var matched = that.matchKey.filter(function (key) {
+                    return that.rightList.filter(function(item) {
+                        var matched = that.matchKey.filter(function(key) {
                             return (item[key] + '').indexOf(that.rightAutoCompleteInput) > -1;
                         });
                         return matched.length > 0;
@@ -161,7 +182,7 @@
                 }
             },
             rightMatchedCheckedItems(){
-                var checked = this.matchedRightList.filter(function (item) {
+                var checked = this.matchedRightList.filter(function(item) {
                     return item.checked;
                 });
                 this.rightAllChecked = checked.length > 0 && checked.length === this.matchedRightList.length;
@@ -176,42 +197,45 @@
         },
         methods: {
             initRightList(){
-                var selectedItems=this.selectedItems;
-                if(this.selectedItems.length>0 && this.dataSource.length>0){
-                    var isBroken=Object.keys(this.selectedItems[0]).length<Object.keys(this.dataSource[0]).length;
-                    if(isBroken){
-                        selectedItems=this.selectedItems.map(item1=>{
-                            var matched=this.dataSource.filter(item2=>{
+                var selectedItems = this.selectedItems;
+                if (this.selectedItems.length > 0 && this.dataSource.length > 0) {
+                    var isBroken = Object.keys(this.selectedItems[0]).length < Object.keys(this.dataSource[0]).length;
+                    if (isBroken) {
+                        selectedItems = this.selectedItems.map(item1=> {
+                            var matched = this.dataSource.filter(item2=> {
                                 //item1和item2中的每一个matchkey对应的值都相等(不匹配的matchkey为0)
-                                return this.matchKey.filter(key=>{
-                                    return item1[key]!==item2[key];
-                                }).length===0
+                                return this.matchKey.filter(key=> {
+                                            return item1[key] !== item2[key];
+                                        }).length === 0
                             });
                             return matched[0];
                         })
                     }
+                    this.rightList = selectedItems;
+                } else {
+                    //当list为空数组时,右侧即使有数据也会变为空;当list有数据时才会置rightlist的状态
+                    this.rightList = [];
                 }
-                this.rightList=selectedItems;
             },
             initLeftList(){
                 //处理leftList和matchedRightList
                 var that = this;
                 var dataSource = this.dataSource;
-                this.leftList = dataSource.filter(function (item1) {
-                    var selected=that.rightList.filter(function (item2) {
-                        return objEqual(item1, item2);
-                    }).length>0;
+                this.leftList = dataSource.filter(function(item1) {
+                    var selected = that.rightList.filter(function(item2) {
+                                return objEqual(item1, item2);
+                            }).length > 0;
                     return !selected;
                 })
             },
             toRight(){
                 var that = this;
                 var leftMatchedCheckedItems = JSON.parse(JSON.stringify(this.leftMatchedCheckedItems));
-                leftMatchedCheckedItems.map(function (item) {
+                leftMatchedCheckedItems.map(function(item) {
                     item.checked = false;
                 });
-                this.leftList = this.leftList.filter(function (item1) {
-                    return that.leftMatchedCheckedItems.filter(function (item2) {
+                this.leftList = this.leftList.filter(function(item1) {
+                    return that.leftMatchedCheckedItems.filter(function(item2) {
                                 return objEqual(item1, item2);
                             }).length === 0;
                 });
@@ -223,11 +247,11 @@
             toLeft(){
                 var that = this;
                 var rightMatchedCheckedItems = JSON.parse(JSON.stringify(this.rightMatchedCheckedItems));
-                rightMatchedCheckedItems.map(function (item) {
+                rightMatchedCheckedItems.map(function(item) {
                     item.checked = false;
                 });
-                this.rightList = this.rightList.filter(function (item1) {
-                    return that.rightMatchedCheckedItems.filter(function (item2) {
+                this.rightList = this.rightList.filter(function(item1) {
+                    return that.rightMatchedCheckedItems.filter(function(item2) {
                                 return objEqual(item1, item2);
                             }).length === 0;
                 })
@@ -250,7 +274,7 @@
             },
             listContent(item){
                 var showItems = [];
-                this.showKey.map(function (key) {
+                this.showKey.map(function(key) {
                     showItems.push(item[key]);
                 })
                 return showItems.join('-');
@@ -261,22 +285,22 @@
             changeLeftAll(event){
                 var checked = event.target.checked;
                 var matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
-                matchedLeftList.map(function (item, index, arr) {
+                matchedLeftList.map(function(item, index, arr) {
                     arr[index].checked = checked;
                 })
-                var target=[];
-                utility.base.extend(true,target,this.leftList, matchedLeftList);
-                this.leftList=target;
+                var target = [];
+                utility.base.extend(true, target, this.leftList, matchedLeftList);
+                this.leftList = target;
             },
             changeRightAll(event){
                 var checked = event.target.checked;
                 var matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
-                matchedRightList.map(function (item, index, arr) {
+                matchedRightList.map(function(item, index, arr) {
                     arr[index].checked = checked;
                 })
-                var target=[];
-                utility.base.extend(true,target,this.rightList, matchedRightList);
-                this.rightList=target;
+                var target = [];
+                utility.base.extend(true, target, this.rightList, matchedRightList);
+                this.rightList = target;
             }
         },
         watch: {
@@ -309,8 +333,19 @@
         overflow: hidden;
     }
 
+    .transfer-container-bottom {
+        padding-top: 44px;
+        height: 254px;
+        position: relative;
+    }
+
     .transfer-container-autoC {
+        position: absolute;
+        top: 0;
+        left: 0;
         padding: 5px;
+        height: 34px;
+        width: 100%;
     }
 
     .scroll-y {

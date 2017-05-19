@@ -22,18 +22,37 @@ var list = [
 new Vue({
     el: '#transfer',
     data: {
-        list: list,
+        list: [],
         showKey: ['Id', 'Name'],
         selectedItems: [
             {Id: 3},
             {Id: 4},
             {Id: 5}
         ],
-        rightList: []
+        rightList: [],
+        leftLoading: false,
+        rightLoading: false
     },
     methods: {
         change (rightList) {
             this.rightList = JSON.stringify(rightList);
+        },
+        setList(){
+            this.leftLoading = true;
+            this.rightLoading = true;
+            setTimeout(()=> {
+                this.selectedItems = [
+                    {Id: 3},
+                    {Id: 4},
+                    {Id: 5}
+                ];
+                this.rightLoading = false;
+            }, 1000);
+
+            setTimeout(()=> {
+                this.list = list;
+                this.leftLoading = false;
+            }, 5000);
         }
     }
 });

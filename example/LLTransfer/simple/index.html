@@ -7,11 +7,13 @@
     <link href="http://static.uc108.com/cdn/bootstrap/3.3.5/css/theme.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
-    <div id="transfer" class="col-md-8 col-sm-offset-2 mt20">
+<div class="container" id="transfer">
+    <div class="col-md-8 col-sm-offset-2 mt20">
         <transfer-ll :show-key="showKey"
                      :data-source="list"
                      :selected-items="selectedItems"
+                     :left-loading="leftLoading"
+                     :right-loading="rightLoading"
                      ref="transfer"
                      @change="change"></transfer-ll>
 
@@ -19,6 +21,11 @@
         <div>
             {{rightList }}
         </div>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-sm btn-primary" @click="setList">
+            setList
+        </button>
     </div>
 </div>
 
