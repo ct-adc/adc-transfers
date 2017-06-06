@@ -85,7 +85,6 @@
 </template>
 
 <script type="es6">
-    import utility from 'ct-utility';
     function objEqual(obj1, obj2) {
         for (var i in obj1) {
             if (obj1.hasOwnProperty(i) && JSON.stringify(obj2[i]) !== JSON.stringify(obj1[i])) {
@@ -285,22 +284,52 @@
             changeLeftAll(event){
                 var checked = event.target.checked;
                 var matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
-                matchedLeftList.map(function(item, index, arr) {
-                    arr[index].checked = checked;
-                })
-                var target = [];
-                utility.base.extend(true, target, this.leftList, matchedLeftList);
-                this.leftList = target;
+                if (this.leftAutoCompleteInput != '' && matchedLeftList.length > 0) {
+                    // 匹配项为leftList的真子集且不为空集时，需要结合matchedLeftList处理数据
+                    this.leftList = this.leftList.map(item=> {
+                        var isSameItem = matchedLeftList.filter(matchedItem=> {
+                                    var allMatched = this.matchKey.filter(key=> {
+                                                return item[key] !== matchedItem[key];
+                                            }).length === 0;
+                                    return allMatched;
+                                }).length > 0;
+                        if (isSameItem) {
+                            item.checked = checked;
+                        }
+                        return item;
+                    })
+                }else if(this.leftAutoCompleteInput ===''){
+                    // 匹配项和leftList相等时，无需结合matchedLeftList做处理
+                    this.leftList = this.leftList.map(item=> {
+                        item.checked = checked;
+                        return item;
+                    })
+                }
             },
             changeRightAll(event){
                 var checked = event.target.checked;
                 var matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
-                matchedRightList.map(function(item, index, arr) {
-                    arr[index].checked = checked;
-                })
-                var target = [];
-                utility.base.extend(true, target, this.rightList, matchedRightList);
-                this.rightList = target;
+                if (this.rightAutoCompleteInput != '' && matchedRightList.length > 0) {
+                    // 匹配项为rightList的真子集且不为空集时，需要结合matchedRightList处理数据
+                    this.rightList = this.rightList.map(item=> {
+                        var isSameItem = matchedRightList.filter(matchedItem=> {
+                                    var allMatched = this.matchKey.filter(key=> {
+                                                return item[key] !== matchedItem[key];
+                                            }).length === 0;
+                                    return allMatched;
+                                }).length > 0;
+                        if (isSameItem) {
+                            item.checked = checked;
+                        }
+                        return item;
+                    })
+                } else if (this.rightAutoCompleteInput === '') {
+                    // 匹配项和rightList相等时，无需结合matchedRightList做处理
+                    this.rightList = this.rightList.map(item=> {
+                        item.checked = checked;
+                        return item;
+                    })
+                }
             }
         },
         watch: {

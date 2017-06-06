@@ -46,12 +46,4 @@ module.exports = {
             'vue$': 'vue/dist/vue.common.js'
         }
     }
-    //externals:[
-    //  function(context, request, callback) {
-    //    if (/^ct-utility$/.test(request)){
-    //      return callback(null, 'commonjs ' + request);
-    //    }
-    //    callback();
-    //  }
-    //]
 };
