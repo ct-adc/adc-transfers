@@ -8,25 +8,25 @@
 </head>
 <body>
 <div class="container" id="transfer">
-    <div class="col-md-8 col-sm-offset-2 mt20">
-        <transfer-ll :show-key="showKey"
-                     :data-source="list"
-                     :selected-items="selectedItems"
-                     :left-loading="leftLoading"
-                     :right-loading="rightLoading"
-                     ref="transfer"
-                     @change="change"></transfer-ll>
-
-        <hr>
-        <div>
-            {{rightList }}
+    <div class="row">
+        <div class="col-md-8 col-sm-offset-2 mt20">
+            <transfer-ll :show-key="showKey"
+                         :data-source="list"
+                         :selected-items="selectedItems"
+                         :left-loading="leftLoading"
+                         :right-loading="rightLoading"
+                         ref="transfer"
+                         @change="change"></transfer-ll>
+        </div>
+        <div class="col-md-2">
+            <button type="button" class="btn btn-sm btn-primary" @click="setList">
+                setList
+            </button>
         </div>
     </div>
-    <div class="col-md-2">
-        <button type="button" class="btn btn-sm btn-primary" @click="setList">
-            setList
-        </button>
-    </div>
+        <pre class="well">
+            {{rightList}}
+        </pre>
 </div>
 
 <script src="http://static.uc108.com/cdn/jquery/2.1.0/jquery.js"></script>

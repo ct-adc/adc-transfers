@@ -22,12 +22,12 @@ var list = [
 new Vue({
     el: '#transfer',
     data: {
-        list: [],
+        list: list,
         showKey: ['Id', 'Name'],
         selectedItems: [
-            {Id: 3},
-            {Id: 4},
-            {Id: 5}
+            {Id: 3, Name: 'three'},
+            {Id: 4, Name: 'four'},
+            {Id: 5, Name: 'five'}
         ],
         rightList: [],
         leftLoading: false,
@@ -35,7 +35,7 @@ new Vue({
     },
     methods: {
         change (rightList) {
-            this.rightList = JSON.stringify(rightList);
+            this.rightList = JSON.stringify(rightList,null,4);
         },
         setList(){
             this.leftLoading = true;

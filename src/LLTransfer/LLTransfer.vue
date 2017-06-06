@@ -196,7 +196,7 @@
         },
         methods: {
             initRightList(){
-                var selectedItems = this.selectedItems;
+                var selectedItems = JSON.parse(JSON.stringify(this.selectedItems));
                 if (this.selectedItems.length > 0 && this.dataSource.length > 0) {
                     var isBroken = Object.keys(this.selectedItems[0]).length < Object.keys(this.dataSource[0]).length;
                     if (isBroken) {
@@ -238,10 +238,11 @@
                                 return objEqual(item1, item2);
                             }).length === 0;
                 });
+
                 this.rightList.unshift(...leftMatchedCheckedItems);
                 this.leftAllChecked = false;
                 this.rightAllChecked = false;
-                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
+                this.$emit('change',JSON.parse(JSON.stringify(this.rightList)));
             },
             toLeft(){
                 var that = this;
