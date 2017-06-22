@@ -24,6 +24,7 @@ matchKey | 自动匹配输入时可被匹配的key | ['Id']
 showKey | 显示在单个列表项中的key，如果key有多个,组件采用'-'进行分割内容 | Array | ['Name']
 leftLoading | 左侧列表加载状态 | Boolean | false
 rightLoading | 右侧列表加载状态 | Boolean | false
+button | 按钮的html内容 | Object(button.toLeft / button.toRight) | false
 
 ## 事件说明
 
