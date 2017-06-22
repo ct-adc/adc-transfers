@@ -39,13 +39,13 @@
                     class="btn btn-default"
                     :class="{disabled:!toRightBtnStatus}"
                     :disabled="!toRightBtnStatus"
-                    @click="toRight" style="margin-bottom:10px">向右
+                    @click="toRight" style="margin-bottom:10px" v-html="button.toRight">
             </button>
             <button type="button"
                     class="btn btn-default"
                     :class="{disabled:!toLeftBtnStatus}"
                     :disabled="!toLeftBtnStatus"
-                    @click="toLeft">向左
+                    @click="toLeft" v-html="button.toLeft">
             </button>
         </div>
         <div class="col-sm-5 col-sm-offset-2">
@@ -130,6 +130,15 @@
             rightLoading: {
                 type: Boolean,
                 default: false
+            },
+            button:{
+                type:Object,
+                default(){
+                    return {
+                        toLeft:'<span class="glyphicon glyphicon-chevron-left"></span>',
+                        toRight:'<span class="glyphicon glyphicon-chevron-right"></span>'
+                    }
+                }
             }
         },
         data(){

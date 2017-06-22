@@ -31,7 +31,11 @@ new Vue({
         ],
         rightList: [],
         leftLoading: false,
-        rightLoading: false
+        rightLoading: false,
+        button:{
+            toLeft:'向左',
+            toRight:'向右'
+        }
     },
     methods: {
         change (rightList) {
