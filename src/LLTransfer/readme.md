@@ -20,7 +20,8 @@ dataSource | 原始数据 | Array | []
 selectedItems | 已选择的列表(右边的数据) | Array | []
 matchKey | 自动匹配输入时可被匹配的key | Array | ['Id']
 showKey | 显示在单个列表项中的key，如果key有多个,组件采用'-'进行分割内容 | Array | ['Name']
-
+leftListTitle | 左侧列表的title | String | '全部列表'
+rightListTitle | 右侧列表中的title | String | '已选择列表'
 
 ## 事件说明
 

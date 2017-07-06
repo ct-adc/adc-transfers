@@ -33,9 +33,11 @@ new Vue({
         leftLoading: false,
         rightLoading: false,
         button:{
-            toLeft:'向左',
-            toRight:'向右'
-        }
+            toLeft:'删除',
+            toRight:'添加'
+        },
+        leftListTitle:'游戏列表',
+        rightListTitle:'已选择的游戏'
     },
     methods: {
         change (rightList) {

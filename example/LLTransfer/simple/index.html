@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>list</title>
-    <link href="http://static.uc108.com/cdn/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://static.uc108.com/cdn/bootstrap/3.3.5/css/theme.css" rel="stylesheet">
+    <link href="http://static.uc108.com/cdn/bootstrap/3.3.7/custom/1.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div class="container" id="transfer">
@@ -16,6 +15,8 @@
                          :left-loading="leftLoading"
                          :right-loading="rightLoading"
                          ref="transfer"
+                         :left-list-title="leftListTitle"
+                         :right-list-title="rightListTitle"
                          @change="change" :button="button"></transfer-ll>
         </div>
         <div class="col-md-2">

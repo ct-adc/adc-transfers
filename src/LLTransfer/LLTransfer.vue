@@ -10,9 +10,10 @@
                     <template v-else>
                         {{matchedLeftList.length}} 项
                     </template>
+                    <div class="pull-right">{{leftListTitle}}</div>
                 </div>
                 <div class="transfer-container-bottom">
-                    <div class="loading" v-if="leftLoading" style="margin-top:-44px;height:254px;"></div>
+                    <div class="loading" v-if="leftLoading"></div>
                     <template v-else>
                         <div class="transfer-container-autoC">
                             <input type="text" class="form-control" v-model="leftAutoCompleteInput"
@@ -58,6 +59,9 @@
                     <template v-else>
                         {{matchedRightList.length}} 项
                     </template>
+                    <div class="pull-right">
+                        {{rightListTitle}}
+                    </div>
                 </div>
                 <div class="transfer-container-bottom">
                     <div class="loading" v-if="rightLoading" style="margin-top:-44px;height:254px;"></div>
@@ -131,14 +135,22 @@
                 type: Boolean,
                 default: false
             },
-            button:{
-                type:Object,
+            button: {
+                type: Object,
                 default(){
                     return {
-                        toLeft:'<span class="glyphicon glyphicon-chevron-left"></span>',
-                        toRight:'<span class="glyphicon glyphicon-chevron-right"></span>'
+                        toLeft: '<span class="glyphicon glyphicon-chevron-left"></span>',
+                        toRight: '<span class="glyphicon glyphicon-chevron-right"></span>'
                     }
                 }
+            },
+            leftListTitle: {
+                type: String,
+                default: '全部列表'
+            },
+            rightListTitle: {
+                type: String,
+                default: '已选择列表'
             }
         },
         data(){
@@ -251,7 +263,7 @@
                 this.rightList.unshift(...leftMatchedCheckedItems);
                 this.leftAllChecked = false;
                 this.rightAllChecked = false;
-                this.$emit('change',JSON.parse(JSON.stringify(this.rightList)));
+                this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
             toLeft(){
                 var that = this;
@@ -308,7 +320,7 @@
                         }
                         return item;
                     })
-                }else if(this.leftAutoCompleteInput ===''){
+                } else if (this.leftAutoCompleteInput === '') {
                     // 匹配项和leftList相等时，无需结合matchedLeftList做处理
                     this.leftList = this.leftList.map(item=> {
                         item.checked = checked;
@@ -417,8 +429,9 @@
         margin-left: -15px;
     }
 
-    input[type="checkbox"] {
-        vertical-align: text-top;
+    .loading {
+        margin-top: -44px;
+        height: 254px;
     }
 </style>
 
