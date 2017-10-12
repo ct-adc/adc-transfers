@@ -88,7 +88,7 @@
     </div>
 </template>
 
-<script type="es6">
+<script type="text/ecmascript-6">
     function objEqual(obj1, obj2) {
         for (var i in obj1) {
             if (obj1.hasOwnProperty(i) && JSON.stringify(obj2[i]) !== JSON.stringify(obj1[i])) {
@@ -119,13 +119,15 @@
                 //匹配的key，可以单个或多个key
                 type: Array,
                 default(){
-                    return ['Id']
+                    return ['Id'];
                 }
             },
             showKey: {
                 //显示的key，可以单个或多个key
                 type: Array,
-                default: ['Name']
+                default(){
+                    return ['Name'];
+                }
             },
             leftLoading: {
                 type: Boolean,
