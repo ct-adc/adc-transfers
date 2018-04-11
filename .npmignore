@@ -1,0 +1,15 @@
+.idea/
+build/
+config/
+ejs/
+mock/
+.eslintignore
+.eslintrc.js
+.babelrc
+.postcssrc.js
+index.html
+package-lock.json
+src/css/
+src/js/
+
+

@@ -1,16 +1,13 @@
-/**
- * @author rubyisapm
- */
 var path = require('path');
 var webpack = require('webpack');
 module.exports = {
     entry: {
-        index:'./src/LLTransfer/index.js'
+        index:'./src/component/main.vue'
     },
     output: {
-        path: path.resolve(__dirname, './lib'),
+        path: path.resolve(__dirname, '../lib'),
         filename: '[name].js',
-        library:'transfers',
+        library:'ct-adc-transfers',
         libraryTarget: 'umd'
     },
     module: {
@@ -20,30 +17,36 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/
             },{
-                test: /\.css$/,
-                loader: 'css-loader'
-            },{
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 options: {
                     loaders: {
-                        // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
-                        // the "scss" and "sass" values for the lang attribute to the right configs here.
-                        // other preprocessors should work out of the box, no loader config like this nessessary.
-                        'css':'vue-style-loader!css-loader',
                         'scss': 'vue-style-loader!css-loader!sass-loader',
                         'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
                     }
-                    // other vue-loader options go here
                 }
             }
         ]
     },
     resolve: {
-        modules:[path.resolve(__dirname, 'src/js/component'),path.resolve(__dirname, 'src/js/module'),'node_modules'],
+        modules:['src/component','node_modules'],
         extensions: ['.js', '.json','.vue','.css'],
         alias: {
             'vue$': 'vue/dist/vue.common.js'
+        }
+    },
+    externals: {
+        'ct-utility': {
+            commonjs: 'ct-utility',
+            commonjs2: 'ct-utility',
+            amd: 'ct-utility',
+            root: 'ct-utility'
+        },
+        'vue': {
+            commonjs: 'vue',
+            commonjs2: 'vue',
+            amd: 'vue',
+            root: 'vue'
         }
     }
 };

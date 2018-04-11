@@ -88,44 +88,44 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-    function objEqual(obj1, obj2) {
-        for (var i in obj1) {
+<script>
+    const objEqual = (obj1, obj2)=>{
+        for (const i in obj1) {
             if (obj1.hasOwnProperty(i) && JSON.stringify(obj2[i]) !== JSON.stringify(obj1[i])) {
                 return false;
             }
         }
         return true;
-    }
+    };
 
-    export default{
-        name: 'transfer-ll',
+    export default {
+        name: 'transfer',
         props: {
             dataSource: {
                 //原始数据源
                 type: Array,
-                default(){
+                default() {
                     return [];
                 }
             },
             selectedItems: {
                 //右侧的数据列表
                 type: Array,
-                default(){
+                default() {
                     return [];
                 }
             },
             matchKey: {
                 //匹配的key，可以单个或多个key
                 type: Array,
-                default(){
+                default() {
                     return ['Id'];
                 }
             },
             showKey: {
                 //显示的key，可以单个或多个key
                 type: Array,
-                default(){
+                default() {
                     return ['Name'];
                 }
             },
@@ -139,11 +139,11 @@
             },
             button: {
                 type: Object,
-                default(){
+                default() {
                     return {
                         toLeft: '<span class="glyphicon glyphicon-chevron-left"></span>',
                         toRight: '<span class="glyphicon glyphicon-chevron-right"></span>'
-                    }
+                    };
                 }
             },
             leftListTitle: {
@@ -155,7 +155,7 @@
                 default: '已选择列表'
             }
         },
-        data(){
+        data() {
             return {
                 leftAutoCompleteInput: '',
                 rightAutoCompleteInput: '',
@@ -165,73 +165,80 @@
                 rightAllChecked: false
             };
         },
-        created(){
+        created() {
             this.initRightList();
             this.initLeftList();
         },
         computed: {
-            matchedLeftList(){
-                var that = this;
-                if (that.leftAutoCompleteInput != '') {
+            matchedLeftList() {
+                const that = this;
+
+                if (that.leftAutoCompleteInput !== '') {
                     return that.leftList.filter(function(item) {
-                        var matched = that.matchKey.filter(function(key) {
+                        const matched = that.matchKey.filter(function(key) {
                             return (item[key] + '').indexOf(that.leftAutoCompleteInput) > -1;
                         });
+
                         return matched.length > 0;
-                    })
-                } else {
-                    return that.leftList;
+                    });
                 }
+                return that.leftList;
             },
-            leftMatchedCheckedItems(){
-                var checked = this.matchedLeftList.filter(function(item) {
+            leftMatchedCheckedItems() {
+                const checked = this.matchedLeftList.filter(function(item) {
                     return item.checked;
                 });
+
                 this.leftAllChecked = checked.length > 0 && checked.length === this.matchedLeftList.length;
                 return checked;
             },
-            matchedRightList(){
-                var that = this;
-                if (that.rightAutoCompleteInput != '') {
+            matchedRightList() {
+                const that = this;
+
+                if (that.rightAutoCompleteInput !== '') {
                     return that.rightList.filter(function(item) {
-                        var matched = that.matchKey.filter(function(key) {
+                        const matched = that.matchKey.filter(function(key) {
                             return (item[key] + '').indexOf(that.rightAutoCompleteInput) > -1;
                         });
+
                         return matched.length > 0;
-                    })
-                } else {
-                    return that.rightList;
+                    });
                 }
+                return that.rightList;
             },
-            rightMatchedCheckedItems(){
-                var checked = this.matchedRightList.filter(function(item) {
+            rightMatchedCheckedItems() {
+                const checked = this.matchedRightList.filter(function(item) {
                     return item.checked;
                 });
+
                 this.rightAllChecked = checked.length > 0 && checked.length === this.matchedRightList.length;
                 return checked;
             },
-            toRightBtnStatus(){
+            toRightBtnStatus() {
                 return this.leftMatchedCheckedItems.length > 0;
             },
-            toLeftBtnStatus(){
+            toLeftBtnStatus() {
                 return this.rightMatchedCheckedItems.length > 0;
             }
         },
         methods: {
-            initRightList(){
-                var selectedItems = JSON.parse(JSON.stringify(this.selectedItems));
+            initRightList() {
+                let selectedItems = JSON.parse(JSON.stringify(this.selectedItems));
+
                 if (this.selectedItems.length > 0 && this.dataSource.length > 0) {
-                    var isBroken = Object.keys(this.selectedItems[0]).length < Object.keys(this.dataSource[0]).length;
+                    const isBroken = Object.keys(this.selectedItems[0]).length < Object.keys(this.dataSource[0]).length;
+
                     if (isBroken) {
-                        selectedItems = this.selectedItems.map(item1=> {
-                            var matched = this.dataSource.filter(item2=> {
+                        selectedItems = this.selectedItems.map(item1 => {
+                            const matched = this.dataSource.filter(item2 => {
                                 //item1和item2中的每一个matchkey对应的值都相等(不匹配的matchkey为0)
-                                return this.matchKey.filter(key=> {
-                                            return item1[key] !== item2[key];
-                                        }).length === 0
+                                return this.matchKey.filter(key => {
+                                    return item1[key] !== item2[key];
+                                }).length === 0;
                             });
+
                             return matched[0];
-                        })
+                        });
                     }
                     this.rightList = selectedItems;
                 } else {
@@ -239,27 +246,30 @@
                     this.rightList = [];
                 }
             },
-            initLeftList(){
+            initLeftList() {
                 //处理leftList和matchedRightList
-                var that = this;
-                var dataSource = this.dataSource;
+                const that = this;
+                const dataSource = this.dataSource;
+
                 this.leftList = dataSource.filter(function(item1) {
-                    var selected = that.rightList.filter(function(item2) {
-                                return objEqual(item1, item2);
-                            }).length > 0;
+                    const selected = that.rightList.filter(function(item2) {
+                        return objEqual(item1, item2);
+                    }).length > 0;
+
                     return !selected;
-                })
+                });
             },
-            toRight(){
-                var that = this;
-                var leftMatchedCheckedItems = JSON.parse(JSON.stringify(this.leftMatchedCheckedItems));
+            toRight() {
+                const that = this;
+                const leftMatchedCheckedItems = JSON.parse(JSON.stringify(this.leftMatchedCheckedItems));
+
                 leftMatchedCheckedItems.map(function(item) {
                     item.checked = false;
                 });
                 this.leftList = this.leftList.filter(function(item1) {
                     return that.leftMatchedCheckedItems.filter(function(item2) {
-                                return objEqual(item1, item2);
-                            }).length === 0;
+                        return objEqual(item1, item2);
+                    }).length === 0;
                 });
 
                 this.rightList.unshift(...leftMatchedCheckedItems);
@@ -267,106 +277,116 @@
                 this.rightAllChecked = false;
                 this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
-            toLeft(){
-                var that = this;
-                var rightMatchedCheckedItems = JSON.parse(JSON.stringify(this.rightMatchedCheckedItems));
+            toLeft() {
+                const that = this;
+                const rightMatchedCheckedItems = JSON.parse(JSON.stringify(this.rightMatchedCheckedItems));
+
                 rightMatchedCheckedItems.map(function(item) {
                     item.checked = false;
                 });
                 this.rightList = this.rightList.filter(function(item1) {
                     return that.rightMatchedCheckedItems.filter(function(item2) {
-                                return objEqual(item1, item2);
-                            }).length === 0;
-                })
+                        return objEqual(item1, item2);
+                    }).length === 0;
+                });
                 this.leftList.unshift(...rightMatchedCheckedItems);
                 this.rightAllChecked = false;
                 this.leftAllChecked = false;
                 this.$emit('change', JSON.parse(JSON.stringify(this.rightList)));
             },
-            toggleLeft(event, index){
-                var clone = JSON.parse(JSON.stringify(this.leftList));
+            toggleLeft(event, index) {
+                const clone = JSON.parse(JSON.stringify(this.leftList));
+
                 clone[index].checked = event.target.tagName === 'INPUT' ? clone[index].checked : !clone[index].checked;
                 this.leftList = [];
                 this.leftList = clone;
             },
-            toggleRight(event, index){
-                var clone = JSON.parse(JSON.stringify(this.rightList));
+            toggleRight(event, index) {
+                const clone = JSON.parse(JSON.stringify(this.rightList));
+
                 clone[index].checked = event.target.tagName === 'INPUT' ? clone[index].checked : !clone[index].checked;
                 this.rightList = [];
                 this.rightList = clone;
             },
-            listContent(item){
-                var showItems = [];
+            listContent(item) {
+                const showItems = [];
+
                 this.showKey.map(function(key) {
                     showItems.push(item[key]);
-                })
+                });
                 return showItems.join('-');
             },
-            getRightList(){
+            getRightList() {
                 return JSON.parse(JSON.stringify(this.rightList));
             },
-            changeLeftAll(event){
-                var checked = event.target.checked;
-                var matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
-                if (this.leftAutoCompleteInput != '' && matchedLeftList.length > 0) {
+            changeLeftAll(event) {
+                const checked = event.target.checked;
+                const matchedLeftList = JSON.parse(JSON.stringify(this.matchedLeftList));
+
+                if (this.leftAutoCompleteInput !== '' && matchedLeftList.length > 0) {
                     // 匹配项为leftList的真子集且不为空集时，需要结合matchedLeftList处理数据
-                    this.leftList = this.leftList.map(item=> {
-                        var isSameItem = matchedLeftList.filter(matchedItem=> {
-                                    var allMatched = this.matchKey.filter(key=> {
-                                                return item[key] !== matchedItem[key];
-                                            }).length === 0;
-                                    return allMatched;
-                                }).length > 0;
+                    this.leftList = this.leftList.map(item => {
+                        const isSameItem = matchedLeftList.filter(matchedItem => {
+                            const allMatched = this.matchKey.filter(key => {
+                                return item[key] !== matchedItem[key];
+                            }).length === 0;
+
+                            return allMatched;
+                        }).length > 0;
+
                         if (isSameItem) {
                             item.checked = checked;
                         }
                         return item;
-                    })
+                    });
                 } else if (this.leftAutoCompleteInput === '') {
                     // 匹配项和leftList相等时，无需结合matchedLeftList做处理
-                    this.leftList = this.leftList.map(item=> {
+                    this.leftList = this.leftList.map(item => {
                         item.checked = checked;
                         return item;
-                    })
+                    });
                 }
             },
-            changeRightAll(event){
-                var checked = event.target.checked;
-                var matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
-                if (this.rightAutoCompleteInput != '' && matchedRightList.length > 0) {
+            changeRightAll(event) {
+                const checked = event.target.checked;
+                const matchedRightList = JSON.parse(JSON.stringify(this.matchedRightList));
+
+                if (this.rightAutoCompleteInput !== '' && matchedRightList.length > 0) {
                     // 匹配项为rightList的真子集且不为空集时，需要结合matchedRightList处理数据
-                    this.rightList = this.rightList.map(item=> {
-                        var isSameItem = matchedRightList.filter(matchedItem=> {
-                                    var allMatched = this.matchKey.filter(key=> {
-                                                return item[key] !== matchedItem[key];
-                                            }).length === 0;
-                                    return allMatched;
-                                }).length > 0;
+                    this.rightList = this.rightList.map(item => {
+                        const isSameItem = matchedRightList.filter(matchedItem => {
+                            const allMatched = this.matchKey.filter(key => {
+                                return item[key] !== matchedItem[key];
+                            }).length === 0;
+
+                            return allMatched;
+                        }).length > 0;
+
                         if (isSameItem) {
                             item.checked = checked;
                         }
                         return item;
-                    })
+                    });
                 } else if (this.rightAutoCompleteInput === '') {
                     // 匹配项和rightList相等时，无需结合matchedRightList做处理
-                    this.rightList = this.rightList.map(item=> {
+                    this.rightList = this.rightList.map(item => {
                         item.checked = checked;
                         return item;
-                    })
+                    });
                 }
             }
         },
         watch: {
-            dataSource(){
+            dataSource() {
                 this.initRightList();
                 this.initLeftList();
             },
-            selectedItems(){
+            selectedItems() {
                 this.initRightList();
                 this.initLeftList();
             }
         }
-    }
+    };
 </script>
 
 <style scoped>
@@ -436,4 +456,3 @@
         height: 254px;
     }
 </style>
-

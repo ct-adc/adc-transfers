@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="renderer" content="webkit"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>标题</title>
+    <link rel="shortcut icon" href="http://static.tcy365.com/uc/common/images/favicon.ico">
+    <script type="text/javascript" src="//static.tcy365.com/cdn/pace/1.0.2/pace.js"></script>
+    <link rel="stylesheet" href="//static.tcy365.com/cdn/pace/1.0.2/themes/blue/pace-theme-minimal.css"/>
+    <link href="//static.tcy365.com/cdn/bootstrap/3.3.7/custom/1.0.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//static.tcy365.com/cdn/component/jdpicker/2.0.2/jdpicker.css"/>
+    <link rel="stylesheet" href="//static.tcy365.com/cdn/component/miniMsg/1.6.2/src/css/minimsg.css"/>
+</head>
+<body>
+<div class="container" id="transfer">
+  <div class="row">
+    <div class="col-md-8 col-sm-offset-2 mt20">
+      <transfer :show-key="showKey"
+                   :data-source="list"
+                   :selected-items="selectedItems"
+                   :left-loading="leftLoading"
+                   :right-loading="rightLoading"
+                   ref="transfer"
+                   :left-list-title="leftListTitle"
+                   :right-list-title="rightListTitle"
+                   @change="change" :button="button"></transfer>
+    </div>
+    <div class="col-md-2">
+      <button type="button" class="btn btn-sm btn-primary" @click="setList">
+        setList
+      </button>
+    </div>
+  </div>
+  <pre class="well">
+            {{rightList}}
+        </pre>
+</div>
+<script src="//static.tcy365.com/cdn/jquery/2.1.0/jquery.js"></script>
+<script src="//static.tcy365.com/cdn/bootstrap/3.3.7/custom/1.0.4/js/bootstrap.min.js"></script>
+<script src="//static.tcy365.com/cdn/component/popover-confirm/1.2.1/popover-confirm-umd.js"></script>
+<script src="//static.tcy365.com/cdn/component/miniMsg/1.6.2/src/js/miniMsg-umd.js"></script>
+<script src="//static.tcy365.com/cdn/webuploader/0.1.5/webuploader.html5only.js"></script>
+<script src="//static.tcy365.com/cdn/component/jdpicker/2.0.2/jdpicker.js"></script>
+<script src="//static.tcy365.com/cdn/component/area/3.0.0/area.js"></script>
+<%= htmlWebpackPlugin.options.script %>
+</body>
+</html>

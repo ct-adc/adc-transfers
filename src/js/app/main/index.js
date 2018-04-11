@@ -2,9 +2,8 @@
  * @author rubyisapm
  */
 import Vue from 'vue';
-import transfers from '../../../index';
+import transfer from 'main';
 
-Vue.component(transfers.LLTransfer.name, transfers.LLTransfer);
 var list = [
     {Id: 1, Name: 'one'},
     {Id: 2, Name: 'two'},
@@ -20,15 +19,17 @@ var list = [
     {Id: 12, Name: 'twelve'},
     {Id: 13, Name: 'thirteen'}
 ];
+
 new Vue({
     el: '#transfer',
+    components: {
+        transfer
+    },
     data: {
         list: list,
         showKey: ['Id', 'Name'],
         selectedItems: [
-            {Id: 3},
-            {Id: 4},
-            {Id: 5}
+            {Id: 7, Name: 'seven'}
         ],
         rightList: [],
         leftLoading: false,
