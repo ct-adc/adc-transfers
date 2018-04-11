@@ -297,16 +297,28 @@
             toggleLeft(event, index) {
                 const clone = JSON.parse(JSON.stringify(this.leftList));
 
-                clone[index].checked = event.target.tagName === 'INPUT' ? clone[index].checked : !clone[index].checked;
-                this.leftList = [];
-                this.leftList = clone;
+                if (event.target.tagName === 'INPUT'){
+                    if (typeof clone[index].checked === 'undefined' || !clone[index].checked){
+                        clone[index].checked = true;
+                    } else {
+                        clone[index].checked = false;
+                    }
+                    this.leftList = [];
+                    this.leftList = clone;
+                }
             },
             toggleRight(event, index) {
                 const clone = JSON.parse(JSON.stringify(this.rightList));
 
-                clone[index].checked = event.target.tagName === 'INPUT' ? clone[index].checked : !clone[index].checked;
-                this.rightList = [];
-                this.rightList = clone;
+                if (event.target.tagName === 'INPUT'){
+                    if (typeof clone[index].checked === 'undefined' || !clone[index].checked){
+                        clone[index].checked = true;
+                    } else {
+                        clone[index].checked = false;
+                    }
+                    this.rightList = [];
+                    this.rightList = clone;
+                }
             },
             listContent(item) {
                 const showItems = [];
